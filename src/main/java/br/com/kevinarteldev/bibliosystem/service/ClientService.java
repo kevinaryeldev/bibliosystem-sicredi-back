@@ -19,17 +19,20 @@ import java.util.List;
 public class ClientService {
     private final ObjectMapper objectMapper;
     private final ClientRepository clientRepository;
-
     public void create(ClientCreateDTO client){
         ClientEntity clientEntity = objectMapper.convertValue(client, ClientEntity.class);
-        clientRepository.save(clientEntity);
+        ClientEntity clientSaved = clientRepository.save(clientEntity);
+        objectMapper.convertValue(clientSaved, ClientDTO.class);
         return;
     }
-
+//    public ClientDTO edit(Integer id, ClientCreateDTO client){
+//        ClientEntity clientEntity = objectMapper.convertValue(client, ClientEntity.class);
+//        clientRepository.
+//    }
     public PageDTO<ClientDTO> list(Integer page, Integer size){
         Sort orderBy = Sort.by("id");
         PageRequest pageRequest = PageRequest.of(page,size,orderBy);
-        Page<ClientEntity> repositoryPage = clientRepository.returnAll(pageRequest);
+        Page<ClientEntity> repositoryPage = clientRepository.findAll(pageRequest);
         List<ClientDTO> clientList = repositoryPage
                 .getContent()
                 .stream()
@@ -40,5 +43,12 @@ public class ClientService {
                 page,
                 size,
                 clientList);
+    }
+    public void delete(Integer id){
+        clientRepository.deleteById(id);
+    }
+    public ClientDTO findById(Integer id){
+        ClientEntity client = clientRepository.findById(id).orElseThrow(()-> new RuntimeException("Client not found"));
+        return objectMapper.convertValue(client, ClientDTO.class);
     }
 }
