@@ -1,7 +1,8 @@
 package br.com.kevinarteldev.bibliosystem;
 
-import br.com.kevinarteldev.bibliosystem.dto.ClientCreateDTO;
-import br.com.kevinarteldev.bibliosystem.dto.ClientDTO;
+import br.com.kevinarteldev.bibliosystem.request.ClientCreateRequest;
+import br.com.kevinarteldev.bibliosystem.response.ClientResponse;
+import br.com.kevinarteldev.bibliosystem.response.PageResponse;
 import br.com.kevinarteldev.bibliosystem.repository.ClientRepository;
 import br.com.kevinarteldev.bibliosystem.service.ClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,8 +17,8 @@ import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class ClientTest {
-    ClientCreateDTO fonteOrigem = null;
-    ClientDTO fonteDestino = null;
+    ClientCreateRequest fonteOrigem = null;
+    ClientResponse fonteDestino = null;
 
     @InjectMocks
     private ClientService service;
@@ -25,14 +26,27 @@ public class ClientTest {
     private ClientRepository clientRepository;
     @Mock
     private ObjectMapper objectMapper;
-
     @Test
     public void testCreateClientComSucesso(){
-        fonteOrigem = mock(ClientCreateDTO.class);
-        fonteDestino = mock(ClientDTO.class);
+        fonteOrigem = mock(ClientCreateRequest.class);
+        fonteDestino = mock(ClientResponse.class);
         Mockito.lenient().when(service.create(fonteOrigem)).thenReturn(fonteDestino);
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(fonteOrigem.getName(),fonteDestino.getName())
-        );
+        ClientResponse result = service.create(fonteOrigem);
+        Assertions.assertEquals(result, fonteDestino);
+        Assertions.assertEquals(fonteOrigem.getName(),result.getName());
     }
+    @Test
+    public void testListClientComSucesso(){
+        PageResponse<ClientResponse> pageDTO = mock(PageResponse.class);
+        Mockito.lenient().when(service.list(0,10)).thenReturn(pageDTO);
+        PageResponse<ClientResponse> result = service.list(0,10);
+        Assertions.assertEquals(result, pageDTO);
+    }
+//    @Test
+//    public void testDeleteClientComSucesso(){
+//        Mockito.lenient().when(service.delete(1)).thenReturn(void);
+//        Assertions.assertAll(
+//                () -> Assertions.assertEquals(service.delete(1),null)
+//        );
+//    }
 }
