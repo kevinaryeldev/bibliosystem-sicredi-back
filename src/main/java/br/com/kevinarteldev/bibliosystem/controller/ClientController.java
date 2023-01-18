@@ -1,5 +1,6 @@
 package br.com.kevinarteldev.bibliosystem.controller;
 
+import br.com.kevinarteldev.bibliosystem.exception.BusinessRuleException;
 import br.com.kevinarteldev.bibliosystem.request.ClientCreateRequest;
 import br.com.kevinarteldev.bibliosystem.request.ClientEditRequest;
 import br.com.kevinarteldev.bibliosystem.response.ClientResponse;
@@ -34,7 +35,7 @@ public class ClientController{
         return new ResponseEntity<>(clientService.edit(id, client), HttpStatus.OK);
     }
     @PostMapping("/criar")
-    public ResponseEntity<ClientResponse> create(@Valid @RequestBody ClientCreateRequest client){
+    public ResponseEntity<ClientResponse> create(@Valid @RequestBody ClientCreateRequest client) throws BusinessRuleException {
         return clientService.create(client);
     }
     @DeleteMapping("/deletar/{id}")
