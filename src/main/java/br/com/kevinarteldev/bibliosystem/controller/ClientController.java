@@ -1,6 +1,5 @@
 package br.com.kevinarteldev.bibliosystem.controller;
 
-
 import br.com.kevinarteldev.bibliosystem.request.ClientCreateRequest;
 import br.com.kevinarteldev.bibliosystem.request.ClientEditRequest;
 import br.com.kevinarteldev.bibliosystem.response.ClientResponse;
@@ -19,12 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/client")
 public class ClientController{
     private final ClientService clientService;
-
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
     }
-
-    @GetMapping
+    @GetMapping("/lista-all")
     public ResponseEntity<PageResponse<ClientResponse>> list(Integer page, Integer size){
         return new ResponseEntity<>(clientService.list(page,size), HttpStatus.OK);
     }
@@ -32,15 +29,15 @@ public class ClientController{
     public ResponseEntity<ClientResponse> findById(@PathVariable Integer id){
         return new ResponseEntity<>(clientService.findById(id), HttpStatus.OK);
     }
-    @PatchMapping("/{id}")
+    @PatchMapping("/editar/{id}")
     public ResponseEntity<ClientResponse> update(@PathVariable Integer id, @Valid @RequestBody ClientEditRequest client){
         return new ResponseEntity<>(clientService.edit(id, client), HttpStatus.OK);
     }
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity<ClientResponse> create(@Valid @RequestBody ClientCreateRequest client){
-        return new ResponseEntity<>(clientService.create(client),HttpStatus.CREATED);
+        return clientService.create(client);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         clientService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
