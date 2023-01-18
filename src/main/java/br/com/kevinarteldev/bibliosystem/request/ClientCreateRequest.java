@@ -10,19 +10,13 @@ import java.util.Date;
 @Data
 public class ClientCreateRequest {
 
-    @NotBlank
     private String name;
 
-    @Positive
     private Integer document;
 
-    @NotBlank
-    @Email
     private String email;
 
-    @NotNull
     private Character gender;
-
-    @NotNull
+    
     private Date birthDate;
 }
