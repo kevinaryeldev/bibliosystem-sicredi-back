@@ -32,7 +32,7 @@ public class ClientService {
         if (client.getDocument() == null || client.getDocument().intValue() <= 0) {
             throw new BusinessRuleException("Erro no campo document");
         }
-        if (client.getEmail().isBlank() || client.getEmail().isEmpty() || !client.getEmail().matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$" ) {
+        if (client.getEmail().isBlank() || client.getEmail().isEmpty() || !client.getEmail().matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$" )) {
             throw new BusinessRuleException("Erro no campo email");
         }
         if (client.getGender() == null || client.getGender() != 'M' && client.getGender() != 'F' && client.getGender() != 'O' ) {
