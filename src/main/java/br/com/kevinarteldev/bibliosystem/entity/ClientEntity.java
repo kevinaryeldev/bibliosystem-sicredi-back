@@ -22,14 +22,14 @@ public class ClientEntity {
     @SequenceGenerator(name = "CLIENT_SEQ", sequenceName = "SEQ_CLIENT", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
-    @Column(nullable = false)
+    @Column(name = "name")
     private String name;
-    @Column(nullable = false)
+    @Column(name = "document")
     private Integer document;
-    @Column(nullable = false)
+    @Column(name="email")
     private String email;
-    @Column(nullable = false)
+    @Column(name="gender")
     private Character gender;
-    @Column(nullable = false)
-    private Date birthDate;
+    @Column(name = "birth_date")
+    private Date birth_date;
 }
