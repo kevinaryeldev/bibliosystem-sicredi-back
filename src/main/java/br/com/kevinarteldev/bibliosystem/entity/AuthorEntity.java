@@ -1,12 +1,9 @@
 package br.com.kevinarteldev.bibliosystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.persistence.*;
 
 @Getter
 @Setter
@@ -15,6 +12,8 @@ import lombok.Setter;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AuthorEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENT_SEQ")
+    @SequenceGenerator(name = "CLIENT_SEQ", sequenceName = "SEQ_CLIENT", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
     @Column(name = "name")
