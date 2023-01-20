@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
+
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,7 +104,7 @@ public class ClientService {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     public ResponseEntity<ClientResponse> findById(Integer id){
-        ClientEntity client = clientRepository.findById(id).orElseThrow(()-> new org.webjars.NotFoundException("Cliente não encontrado"));
+        ClientEntity client = clientRepository.findById(id).get();
         ClientResponse clientResponse = objectMapper.convertValue(client, ClientResponse.class);
         return new ResponseEntity<>(clientResponse, HttpStatus.OK);
     }
