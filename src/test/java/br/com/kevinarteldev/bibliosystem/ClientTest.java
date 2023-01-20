@@ -1,25 +1,22 @@
 package br.com.kevinarteldev.bibliosystem;
 
+import br.com.kevinarteldev.bibliosystem.exception.BusinessRuleException;
 import br.com.kevinarteldev.bibliosystem.exception.NotFoundException;
 import br.com.kevinarteldev.bibliosystem.request.ClientCreateRequest;
-import br.com.kevinarteldev.bibliosystem.response.ClientResponse;
-import br.com.kevinarteldev.bibliosystem.response.PageResponse;
 import br.com.kevinarteldev.bibliosystem.repository.ClientRepository;
 import br.com.kevinarteldev.bibliosystem.service.ClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class ClientTest {
     ClientCreateRequest fonteOrigem = null;
-    ClientResponse fonteDestino = null;
 
     @InjectMocks
     private ClientService service;
@@ -28,26 +25,34 @@ public class ClientTest {
     @Mock
     private ObjectMapper objectMapper;
     @Test
-    public void testCreateClientComSucesso(){
+    public void testCreateClientComSucesso() throws BusinessRuleException {
 //        fonteOrigem = mock(ClientCreateRequest.class);
-//        fonteDestino = mock(ClientResponse.class);
+//        ResponseEntity<ClientResponse> fonteDestino = mock(ResponseEntity.class);
 //        Mockito.lenient().when(service.create(fonteOrigem)).thenReturn(fonteDestino);
-//        ClientResponse result = service.create(fonteOrigem);
+//        ResponseEntity<ClientResponse> result = service.create(fonteOrigem);
 //        Assertions.assertEquals(result, fonteDestino);
-//        Assertions.assertEquals(fonteOrigem.getName(),result.getName());
+//        Assertions.assertEquals(fonteOrigem.getName(),result.getBody().getName());
     }
     @Test
     public void testListClientComSucesso(){
-//        PageResponse<ClientResponse> pageDTO = mock(PageResponse.class);
-//        Mockito.lenient().when(service.list(0,10)).thenReturn(pageDTO);
-//        PageResponse<ClientResponse> result = service.list(0,10);
-//        Assertions.assertEquals(result, pageDTO);
+//        ResponseEntity<PageResponse<ClientResponse>> response = mock(ResponseEntity.class);
+//        Mockito.lenient().when(service.list(0,10)).thenReturn(response);
+//        ResponseEntity<PageResponse<ClientResponse>> result = service.list(0,10);
+//        Assertions.assertEquals(result, response);
     }
     @Test
-    public void testDeleteClientComSucesso() throws NotFoundException {
-//        Mockito.lenient().when(service.delete(1)).thenReturn(true);
+    public void testDeleteClientComSucesso() throws NotFoundException, BusinessRuleException {
+//        fonteOrigem = mock(ClientCreateRequest.class);
+//        ResponseEntity<ClientResponse> fonteDestino = mock(ResponseEntity.class);
+//        Mockito.lenient().when(service.create(fonteOrigem)).thenReturn(fonteDestino);
+//        ResponseEntity<ClientResponse> resultCreate = service.create(fonteOrigem);
+//        ResponseEntity<Void> response = mock(ResponseEntity.class);
+//        Integer id = resultCreate.getBody().getId().intValue();
+//        Mockito.lenient().when(service.delete(id)).thenReturn(response);
+//        ResponseEntity<Void> result = service.delete(id);
 //        Assertions.assertAll(
-//                () -> Assertions.assertEquals(service.delete(1), true)
+//            () -> Assertions.assertEquals(response, result),
+//            () -> Assertions.assertEquals(204,result.getStatusCode())
 //        );
     }
 }
