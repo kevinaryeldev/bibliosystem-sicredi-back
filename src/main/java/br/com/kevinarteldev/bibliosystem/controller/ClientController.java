@@ -28,7 +28,7 @@ public class ClientController {
         return clientService.list(page, size);
     }
     @GetMapping("/busca-id{id}")
-    public ResponseEntity<ClientResponse> findById(@PathVariable Integer id){
+    public ResponseEntity<ClientResponse> findById(@PathVariable Integer id) throws NotFoundException {
         return clientService.findById(id);
     }
     @PatchMapping("/editar/{id}")

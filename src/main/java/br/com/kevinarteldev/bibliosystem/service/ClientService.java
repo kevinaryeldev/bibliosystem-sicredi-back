@@ -17,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,12 +27,12 @@ public class ClientService {
     private final ClientRepository clientRepository;
 
     private void validateEmail(String email) throws BusinessRuleException {
-        if (email.isBlank() || email.isEmpty() || !email.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$" )){
+        if (email.isBlank() || !email.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$" )){
             throw new BusinessRuleException("Erro no campo email");
         }
     }
     private void validateName(String name) throws BusinessRuleException {
-        if (name.isBlank() || name.isEmpty() || name.length() < 10 || !name.matches("[A-Za-zÀ-ȕ ]")){
+        if ( name.isBlank() || name.length() < 10 || !name.matches("[A-Za-zÀ-ȕ ]")){
             throw new BusinessRuleException("Erro no nome do cliente");
         }
     }
@@ -45,7 +43,7 @@ public class ClientService {
     }
     private ClientEntity getClientById(Integer id) throws NotFoundException {
         Optional<ClientEntity> clientOpt = clientRepository.findById(id);
-        if(!clientOpt.isPresent()){
+        if(clientOpt.isEmpty()){
             throw new NotFoundException("Cliente não encontrado");
         }
         return clientOpt.get();
@@ -54,7 +52,7 @@ public class ClientService {
     @Transactional
     public ResponseEntity<ClientResponse> create(ClientCreateRequest client) throws BusinessRuleException {
         validateName(client.getName());
-        if (client.getDocument() == null || client.getDocument().intValue() <= 0) {
+        if (client.getDocument() == null || client.getDocument() <= 0) {
             throw new BusinessRuleException("Erro no campo document");
         }
         validateEmail(client.getEmail());
@@ -85,6 +83,9 @@ public class ClientService {
         Sort orderBy = Sort.by("id");
         PageRequest pageRequest = PageRequest.of(page,size,orderBy);
         Page<ClientEntity> repositoryPage = clientRepository.findAll(pageRequest);
+        if (repositoryPage.getTotalElements() == 0){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
         List<ClientResponse> clientList = repositoryPage
                 .getContent()
                 .stream()
@@ -103,8 +104,12 @@ public class ClientService {
         clientRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    public ResponseEntity<ClientResponse> findById(Integer id){
-        ClientEntity client = clientRepository.findById(id).get();
+    public ResponseEntity<ClientResponse> findById(Integer id) throws NotFoundException {
+        Optional<ClientEntity> clientOpt = clientRepository.findById(id);
+        if (clientOpt.isEmpty()){
+            throw new NotFoundException("Cliente não encontrado.");
+        }
+        ClientEntity client = clientOpt.get();
         ClientResponse clientResponse = objectMapper.convertValue(client, ClientResponse.class);
         return new ResponseEntity<>(clientResponse, HttpStatus.OK);
     }
