@@ -1,17 +1,15 @@
 package br.com.kevinarteldev.bibliosystem.controller;
 
+import br.com.kevinarteldev.bibliosystem.exception.BusinessRuleException;
+import br.com.kevinarteldev.bibliosystem.exception.NotFoundException;
 import br.com.kevinarteldev.bibliosystem.request.BookCreateRequest;
 import br.com.kevinarteldev.bibliosystem.response.BookResponse;
 import br.com.kevinarteldev.bibliosystem.response.PageResponse;
 import br.com.kevinarteldev.bibliosystem.service.BookService;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Validated
 @Slf4j
 @RestController
 @RequestMapping("/book")
@@ -20,17 +18,20 @@ public class BookController {
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
-    @PostMapping
-    public ResponseEntity<BookResponse> create(@Valid @RequestBody BookCreateRequest book){
-        return new ResponseEntity<>(bookService.create(book),HttpStatus.CREATED);
+    @PostMapping("/criar")
+    public ResponseEntity<BookResponse> create(@RequestBody BookCreateRequest book) throws BusinessRuleException {
+        return bookService.create(book);
     }
-    @GetMapping
+    @GetMapping("/lista-all")
     public ResponseEntity<PageResponse<BookResponse>> list(Integer page, Integer size){
-        return new ResponseEntity<>(bookService.list(page,size), HttpStatus.OK);
+        return bookService.list(page,size);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id){
-        bookService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @GetMapping("/lista/{id}")
+    public ResponseEntity<BookResponse> getById(@PathVariable Integer id) throws NotFoundException {
+        return bookService.findById(id);
+    }
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) throws NotFoundException {
+        return bookService.delete(id);
     }
 }
